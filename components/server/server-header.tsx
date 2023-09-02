@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users} from "lucide-react";
+import {useModal} from "@/hooks/use-modals-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -19,6 +20,8 @@ interface ServerHeaderProps {
 
 
 const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
+  const {onOpen} = useModal();
+
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
@@ -36,6 +39,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({ server, role }) => {
         >
           {isModerator && (
             <DropdownMenuItem
+              onClick={() => onOpen('invite', { server })}
               className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
             >
               Invite People
