@@ -6,6 +6,7 @@ import {Edit, Hash, Lock, Mic, Trash, Video} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
 import ActionTooltip from "@/components/action-tooltip";
+import {useModal} from "@/hooks/use-modals-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -24,6 +25,7 @@ const ServerChannel: FC<ServerChannelProps> = ({
   server,
   role
 }) => {
+  const { onOpen } = useModal();
   const router = useRouter();
   const params = useParams();
 
@@ -44,10 +46,16 @@ const ServerChannel: FC<ServerChannelProps> = ({
       {channel.name !== 'general' && role !== MemberRole.GUEST && (
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit" side="right" align="center">
-            <Edit className="w-4 h-4 hidden group-hover:block text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"/>
+            <Edit
+              onClick={() => onOpen('editChannel', { server, channel })}
+              className="w-4 h-4 hidden group-hover:block text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
+            />
           </ActionTooltip>
           <ActionTooltip label="Delete" side="right" align="center">
-            <Trash className="w-4 h-4 hidden group-hover:block text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"/>
+            <Trash
+              onClick={() => onOpen('deleteChannel', { server, channel })}
+              className="w-4 h-4 hidden group-hover:block text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
+            />
           </ActionTooltip>
         </div>
       )}
